@@ -86,7 +86,7 @@ git rm -r --cached node_modules
 
 Try adding `.gitignore` first, then run `git status`. You will see `node_modules` is still there. Ask yourself: **why did `.gitignore` not remove it?** This is the important lesson.
 
-- [ ] Done
+- [x] Done
 
 ### 2. Remove the broken folder
 
@@ -108,7 +108,7 @@ git rm --cached myloginpage
 
 Then delete the folder.
 
-- [ ] Done
+- [x] Done
 
 ### 3. Delete the leftover files
 
@@ -119,7 +119,7 @@ These files are not used by your app. Delete them:
 - `my-landing-page/src/App.css` — 184 lines. Nothing imports it.
 - `my-landing-page/src/assets/react.svg` and `vite.svg` — not used.
 
-- [ ] Done
+- [x] Done
 
 ### 4. Move Tailwind to the correct place
 
