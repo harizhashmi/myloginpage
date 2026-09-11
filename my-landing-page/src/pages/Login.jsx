@@ -1,8 +1,19 @@
+import { useState } from "react";
 function Login({ onLogin }) {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+
   function handleSubmit(event) {
-    event.preventDefault()
-    onLogin()
+    event.preventDefault();
+
+    const success = onLogin({ email, password });
+
+    if (!success) {
+      setError("Incorrect email or password");
+    }
   }
+
 
   return (
     <div className="min-h-screen bg-slate-950 flex items-center justify-center px-4">
@@ -39,6 +50,8 @@ function Login({ onLogin }) {
 
               <input
                 type="email"
+                value={email}
+                onChange={(event) => setEmail(event.target.value)}
                 placeholder="you@example.com"
                 required
                 className="w-full px-4 py-3 bg-slate-950 border border-slate-700 rounded-xl text-white outline-none focus:border-blue-500"
@@ -52,6 +65,8 @@ function Login({ onLogin }) {
 
               <input
                 type="password"
+                value={password}
+                onChange={(event) => setPassword(event.target.value)}
                 placeholder="Enter your password"
                 required
                 className="w-full px-4 py-3 bg-slate-950 border border-slate-700 rounded-xl text-white outline-none focus:border-blue-500"
@@ -64,6 +79,13 @@ function Login({ onLogin }) {
             >
               Sign in
             </button>
+
+            {
+              error && (
+                <p className="text-red-500 text-sm mt-4">
+                  {error}
+                </p>
+              )}
 
           </form>
 
