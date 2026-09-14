@@ -1,33 +1,47 @@
-    function Profile({ onBack, onLogout }) {
+import Header from '../components/Header'
+
+const infoFields = [
+  {
+    label: 'Full Name',
+    value: 'Hariz Hashmi',
+  },
+  {
+    label: 'Email',
+    value: 'hariz@example.com',
+  },
+  {
+    label: 'Phone',
+    value: '+60 12-345 6789',
+  },
+  {
+    label: 'Role',
+    value: 'Administrator',
+  },
+]
+function InfoField({ label, value }) {
+  return (
+    <div>
+      <p className="text-sm text-slate-500 mb-2">
+        {label}
+      </p>
+
+      <p className="text-slate-200">
+        {value}
+      </p>
+    </div>
+  )
+}
+
+function Profile({ onBack, onLogout }) {
   return (
     <div className="min-h-screen bg-slate-950 text-white">
 
       {/* Header */}
-      <header className="h-20 border-b border-slate-800 flex items-center justify-between px-8">
-
-        <div className="flex items-center gap-4">
-
-          <button
-            onClick={onBack}
-            className="px-4 py-2 bg-slate-800 hover:bg-slate-700 rounded-lg"
-          >
-            ← Back
-          </button>
-
-          <h1 className="text-2xl font-bold">
-            Profile
-          </h1>
-
-        </div>
-
-        <button
-          onClick={onLogout}
-          className="px-4 py-2 bg-slate-800 hover:bg-slate-700 rounded-lg"
-        >
-          Logout
-        </button>
-
-      </header>
+      <Header
+        title="Profile"
+        onBack={onBack}
+        onLogout={onLogout}
+      />
 
       {/* Main */}
       <main className="max-w-4xl mx-auto p-8">
@@ -72,49 +86,20 @@
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-            <div>
-              <p className="text-sm text-slate-500 mb-2">
-                Full Name
-              </p>
-
-              <p className="text-slate-200">
-                Hariz Hashmi
-              </p>
-            </div>
-
-            <div>
-              <p className="text-sm text-slate-500 mb-2">
-                Email
-              </p>
-
-              <p className="text-slate-200">
-                hariz@example.com
-              </p>
-            </div>
-
-            <div>
-              <p className="text-sm text-slate-500 mb-2">
-                Phone
-              </p>
-
-              <p className="text-slate-200">
-                +60 12-345 6789
-              </p>
-            </div>
-
-            <div>
-              <p className="text-sm text-slate-500 mb-2">
-                Role
-              </p>
-
-              <p className="text-slate-200">
-                Administrator
-              </p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {infoFields.map((field) => (
+                <InfoField
+                  key={field.label}
+                  {...field}
+                />
+              ))}
             </div>
 
           </div>
 
-          <button className="mt-8 px-5 py-3 bg-blue-600 hover:bg-blue-700 rounded-xl font-semibold">
+          <button
+            disabled
+            className="mt-8 px-5 py-3 bg-blue-600 hover:bg-blue-700 rounded-xl opacity-50 cursor-not-allowed">
             Edit Profile
           </button>
 
@@ -131,11 +116,15 @@
 
             <div>
 
-              <label className="block text-sm text-slate-400 mb-2">
+              <label
+                htmlFor="current pasword"
+                className="block text-sm text-slate-400 mb-2"
+              >
                 Current Password
               </label>
 
               <input
+                id="current-password"
                 type="password"
                 className="w-full px-4 py-3 bg-slate-950 border border-slate-700 rounded-xl text-white outline-none focus:border-blue-500"
                 placeholder="Enter current password"
@@ -145,11 +134,15 @@
 
             <div>
 
-              <label className="block text-sm text-slate-400 mb-2">
+              <label
+                htmlfor="new password"
+                className="block text-sm text-slate-400 mb-2"
+              >
                 New Password
               </label>
 
               <input
+                id="new-password"
                 type="password"
                 className="w-full px-4 py-3 bg-slate-950 border border-slate-700 rounded-xl text-white outline-none focus:border-blue-500"
                 placeholder="Enter new password"
@@ -159,11 +152,15 @@
 
             <div>
 
-              <label className="block text-sm text-slate-400 mb-2">
+              <label
+                htmlFor="confirm password"
+                className="block text-sm text-slate-400 mb-2"
+              >
                 Confirm New Password
               </label>
 
               <input
+                id="confirm-password"
                 type="password"
                 className="w-full px-4 py-3 bg-slate-950 border border-slate-700 rounded-xl text-white outline-none focus:border-blue-500"
                 placeholder="Confirm new password"
@@ -173,7 +170,9 @@
 
           </div>
 
-          <button className="mt-6 px-5 py-3 bg-blue-600 hover:bg-blue-700 rounded-xl font-semibold">
+          <button
+            disabled
+            className="mt-6 px-5 py-3 bg-blue-600 hover:bg-blue-700 rounded-xl font-semibold opacity-50 cursor-not-allowed">
             Update Password
           </button>
 
