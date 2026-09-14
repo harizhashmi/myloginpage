@@ -138,7 +138,7 @@ npm install
 npm run dev
 ```
 
-- [ ] Done
+- [x ] Done
 
 ### 5. Make lint work
 
@@ -149,7 +149,7 @@ npm run lint
 
 It fails now. Make it pass.
 
-- [ ] Done
+- [ x] Done
 
 ### 6. Commit properly
 
@@ -203,7 +203,7 @@ git push -u origin learning/week-1
 
 Open the link Bitbucket prints in your terminal. That makes the pull request.
 
-- [ ] Done
+- [x] Done
 
 **Wednesday is finished when:** the pull request is open, and you can explain each commit to me.
 
@@ -230,7 +230,7 @@ In `App.jsx`, check the email and password. You can hardcode the correct one for
 
 This teaches you **state**. State is data that React watches. When state changes, React draws the screen again.
 
-- [ ] Done
+- [x] Done
 
 ### 8. Show an error message
 
@@ -238,7 +238,7 @@ If the password is wrong, show red text under the form.
 
 Do not use `alert()`. Use state.
 
-- [ ] Done
+- [x] Done
 
 ### 9. The user name is written in two places
 
@@ -312,7 +312,7 @@ React will warn you if you forget `key`. Ask me why `key` is needed.
 
 Make one file: `src/components/Header.jsx`. Use props for the parts that are different.
 
-- [ ] Done
+- [x] Done
 
 ### 13. Small fixes
 
@@ -321,7 +321,7 @@ Make one file: `src/components/Header.jsx`. Use props for the parts that are dif
 - Every `<label>` needs `htmlFor="something"`, and the input needs the same `id="something"`. Without this, clicking the label does nothing.
 - The buttons "Edit Profile" and "Update Password" do nothing when clicked. Either make them work, or add `disabled`. A button that looks ready but does nothing is confusing.
 
-- [ ] Done
+- [x] Done
 
 ### 14. Second pull request
 
