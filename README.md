@@ -329,7 +329,3 @@ Why: `Profile` cannot change `user` alone because `Dashboard` needs it too. Data
 **Friday work done when:** both Profile buttons work, each field shows its own error, name change shows everywhere, Login still uses `useState`. Pushed.
 
 **If time left (45 min):** `src/hooks/useLocalStorage.ts` with signature `useLocalStorage<T>(key: string, initialValue: T)`, returns `[value, setValue]`. Use it for both `isLoggedIn` and `user`. `App.tsx` has no `localStorage` after. The `<T>` is the one generic allowed this week.
-
----
-
-**Next:** Task 1. 5 minutes.
