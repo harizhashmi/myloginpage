@@ -36,7 +36,9 @@ function App() {
     ) {
       setIsLoggedIn(true)
       setCurrentPage('dashboard')
+      return true
     }
+    return false
   }
 
   function handleLogout() {
