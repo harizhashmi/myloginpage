@@ -1,8 +1,5 @@
+import type { User } from '../types'
 
-type User = {
-  name: string
-  role: string
-}
 
 type HeaderProps = {
   title: string

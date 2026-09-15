@@ -2,14 +2,9 @@ import { useState } from 'react'
 import Login from './pages/Login'
 import Dashboard from './pages/Dashboard'
 import Profile from './pages/Profile'
+import type { User, Page } from './types'
 
-type User = {
-  name: string
-  email: string
-  role: string
-}
 
-type Page = 'dashboard' | 'profile'
 
 type LoginCredentials = {
   email: string
