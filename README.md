@@ -54,7 +54,7 @@ No pull requests this week. Push to `learning/week-2` at the end of every day. I
 
 Why: right now the browser never loads a `.tsx` file. Your TypeScript is not running.
 
-- [ ] Done
+- [x] Done
 
 #### 2. Move TypeScript into the app package (10 min)
 
@@ -67,7 +67,7 @@ Then delete the top-level `package.json` and `package-lock.json`.
 
 Why: same mistake as Tailwind last week. Tools live in the package that uses them.
 
-- [ ] Done
+- [x] Done
 
 #### 3. Add a typecheck script (5 min)
 
