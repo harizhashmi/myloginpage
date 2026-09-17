@@ -3,7 +3,8 @@ import Login from './pages/Login'
 import Dashboard from './pages/Dashboard'
 import Profile from './pages/Profile'
 import type { User } from './types'
-
+import { useState } from 'react'
+import ProtectedRoute from './components/protectedRoute'
 
 
 type LoginCredentials = {
@@ -12,6 +13,8 @@ type LoginCredentials = {
 }
 
 function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+
   const user: User = {
     name: 'Hariz Hashmi',
     email: 'hariz@example.com',
@@ -28,6 +31,7 @@ function App() {
       email === 'hariz@gmail.com' &&
       password === '123456'
     ) {
+      setIsLoggedIn(true)
       navigate('dashboard')
       return true
     }
@@ -35,6 +39,7 @@ function App() {
   }
 
   function handleLogout() {
+    setIsLoggedIn(false)
     navigate('/')
   }
   return (
@@ -52,20 +57,24 @@ function App() {
       <Route
         path="/dashboard"
         element={
-          <Dashboard
-            user={user}
-            onLogout={handleLogout}
-          />
+          <ProtectedRoute isLoggedIn={isLoggedIn}>
+            <Dashboard
+              user={user}
+              onLogout={handleLogout}
+            />
+          </ProtectedRoute>
         }
       />
 
       <Route
         path="/profile"
         element={
-          <Profile
-            user={user}
-            onLogout={handleLogout}
-          />
+          <ProtectedRoute isLoggedIn={isLoggedIn}>
+            <Profile
+              user={user}
+              onLogout={handleLogout}
+            />
+          </ProtectedRoute>
         }
       />
     </Routes>
