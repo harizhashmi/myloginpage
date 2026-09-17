@@ -5,6 +5,7 @@ import Profile from './pages/Profile'
 import type { User } from './types'
 import { useEffect, useState } from 'react'
 import ProtectedRoute from './components/protectedRoute'
+import NotFound from './pages/NotFound'
 
 
 type LoginCredentials = {
@@ -83,7 +84,10 @@ function App() {
           </ProtectedRoute>
         }
       />
+
+      <Route path="*" element={<NotFound />} />
     </Routes>
+
   )
 }
 
