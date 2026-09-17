@@ -35,7 +35,7 @@ function App() {
   }
 
   function handleLogout() {
-    navigate('/login')
+    navigate('/')
   }
   return (
     <Routes>
