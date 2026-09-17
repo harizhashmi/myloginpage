@@ -47,6 +47,7 @@ function App() {
   if (currentPage === 'profile') {
     return (
       <Profile
+        user={user}
         onBack={() => setCurrentPage('dashboard')}
         onLogout={handleLogout}
       />
