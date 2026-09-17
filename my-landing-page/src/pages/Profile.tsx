@@ -8,7 +8,6 @@ type InfoFieldProps = {
 
 type ProfileProps = {
   user: User
-  onBack: () => void
   onLogout: () => void
 }
 
@@ -29,7 +28,6 @@ function InfoField({ label, value }: InfoFieldProps) {
 
 function Profile({
   user,
-  onBack,
   onLogout,
 }: ProfileProps) {
   const infoFields = [
@@ -58,7 +56,6 @@ function Profile({
         {/* Header */}
         < Header
           title="Profile"
-          onBack={onBack}
           onLogout={onLogout}
         />
 

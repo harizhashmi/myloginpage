@@ -54,7 +54,6 @@ function App() {
         element={
           <Dashboard
             user={user}
-            onProfile={() => navigate('/profile')}
             onLogout={handleLogout}
           />
         }
@@ -65,7 +64,6 @@ function App() {
         element={
           <Profile
             user={user}
-            onBack={() => navigate('/dashboard')}
             onLogout={handleLogout}
           />
         }

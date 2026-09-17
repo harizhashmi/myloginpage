@@ -1,14 +1,9 @@
 
 import Header from '../components/Header'
-
-type User = {
-  name: string
-  role: string
-}
+import type { User } from '../types'
 
 type DashboardProps = {
   user: User
-  onProfile: () => void
   onLogout: () => void
 }
 
@@ -78,7 +73,6 @@ function ActivityRow({ title, detail }: ActivityRowProps) {
 
 function Dashboard({
   user,
-  onProfile,
   onLogout,
 }: DashboardProps) {
   return (
@@ -88,7 +82,6 @@ function Dashboard({
       <Header
         title="MyApp"
         user={user}
-        onProfile={onProfile}
         onLogout={onLogout}
       />
 
