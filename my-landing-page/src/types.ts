@@ -5,5 +5,5 @@ export type User = {
     role: string
 }
 
-export type Page = 'dashboard' | 'profile'
+
 

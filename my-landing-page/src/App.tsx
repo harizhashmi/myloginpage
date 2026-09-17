@@ -1,8 +1,8 @@
-import { useState } from 'react'
+import { Routes, Route, useNavigate } from 'react-router'
 import Login from './pages/Login'
 import Dashboard from './pages/Dashboard'
 import Profile from './pages/Profile'
-import type { User, Page } from './types'
+import type { User } from './types'
 
 
 
@@ -18,8 +18,7 @@ function App() {
     role: 'administrator',
   }
 
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
-  const [currentPage, setCurrentPage] = useState<Page>('dashboard')
+  const navigate = useNavigate()
 
   function handleLogin({
     email,
@@ -29,37 +28,49 @@ function App() {
       email === 'hariz@gmail.com' &&
       password === '123456'
     ) {
-      setIsLoggedIn(true)
-      setCurrentPage('dashboard')
+      navigate('dashboard')
       return true
     }
     return false
   }
 
   function handleLogout() {
-    setIsLoggedIn(false)
+    navigate('/login')
   }
-
-  if (!isLoggedIn) {
-    return <Login onLogin={handleLogin} />
-  }
-
-  if (currentPage === 'profile') {
-    return (
-      <Profile
-        user={user}
-        onBack={() => setCurrentPage('dashboard')}
-        onLogout={handleLogout}
-      />
-    )
-  }
-
   return (
-    <Dashboard
-      user={user}
-      onProfile={() => setCurrentPage('profile')}
-      onLogout={handleLogout}
-    />
+    <Routes>
+      <Route
+        path="/"
+        element={<Login onLogin={handleLogin} />}
+      />
+
+      <Route
+        path="/login"
+        element={<Login onLogin={handleLogin} />}
+      />
+
+      <Route
+        path="/dashboard"
+        element={
+          <Dashboard
+            user={user}
+            onProfile={() => navigate('/profile')}
+            onLogout={handleLogout}
+          />
+        }
+      />
+
+      <Route
+        path="/profile"
+        element={
+          <Profile
+            user={user}
+            onBack={() => navigate('/dashboard')}
+            onLogout={handleLogout}
+          />
+        }
+      />
+    </Routes>
   )
 }
 
