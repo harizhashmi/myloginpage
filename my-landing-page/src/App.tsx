@@ -1,4 +1,4 @@
-import { Routes, Route, useNavigate } from 'react-router'
+import { Routes, Route, useNavigate, Navigate } from 'react-router'
 import Login from './pages/Login'
 import Dashboard from './pages/Dashboard'
 import Profile from './pages/Profile'
@@ -58,7 +58,14 @@ function App() {
 
       <Route
         path="/login"
-        element={<Login onLogin={handleLogin} />}
+        element={
+          isLoggedIn ? (
+            <Navigate to="/dashboard" replace />
+          ) : (
+            <Login onLogin={handleLogin} />
+          )
+        }
+
       />
 
       <Route
