@@ -3,7 +3,7 @@ import Login from './pages/Login'
 import Dashboard from './pages/Dashboard'
 import Profile from './pages/Profile'
 import type { User } from './types'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import ProtectedRoute from './components/protectedRoute'
 
 
@@ -13,7 +13,13 @@ type LoginCredentials = {
 }
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [isLoggedIn, setIsLoggedIn] = useState(() => {
+    return localStorage.getItem('isLoggedIn') === 'true'
+  })
+
+  useEffect(() => {
+    localStorage.setItem('isLoggedIn', String(isLoggedIn))
+  }, [isLoggedIn])
 
   const user: User = {
     name: 'Hariz Hashmi',
