@@ -1,9 +1,18 @@
 import Header from '../components/Header'
 import type { User } from '../types'
+import Input from '../components/Input'
+import { useForm } from 'react-hook-form'
+
 
 type InfoFieldProps = {
   label: string
   value: string
+}
+
+type PasswordFormValues = {
+  currentPassword: string
+  newPassword: string
+  confirmPassword: string
 }
 
 type ProfileProps = {
@@ -30,6 +39,19 @@ function Profile({
   user,
   onLogout,
 }: ProfileProps) {
+  const {
+    register,
+    handleSubmit,
+    watch,
+    reset,
+    formState: { errors },
+  } = useForm<PasswordFormValues>()
+
+  function onSubmit(data: PasswordFormValues) {
+    console.log(data)
+    reset()
+  }
+
   const infoFields = [
     {
       label: 'Full Name',
@@ -119,7 +141,9 @@ function Profile({
           </div >
 
           {/* Change Password */}
-          < div className="mt-6 bg-slate-900 border border-slate-800 rounded-2xl p-8" >
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="mt-6 bg-slate-900 border border-slate-800 rounded-2xl p-8" >
 
             <h2 className="text-xl font-semibold mb-6">
               Change Password
@@ -128,69 +152,76 @@ function Profile({
             <div className="space-y-5">
 
               <div>
-
-                <label
-                  htmlFor="current-password"
-                  className="block text-sm text-slate-400 mb-2"
-                >
-                  Current Password
-                </label>
-
-                <input
+                <Input
                   id="current-password"
+                  label="Current Password"
                   type="password"
-                  className="w-full px-4 py-3 bg-slate-950 border border-slate-700 rounded-xl text-white outline-none focus:border-blue-500"
                   placeholder="Enter current password"
+                  {...register('currentPassword', {
+                    required: 'This field is required',
+                  })}
+                  error={errors.currentPassword?.message}
                 />
 
               </div>
 
               <div>
-
-                <label
-                  htmlFor="new-password"
-                  className="block text-sm text-slate-400 mb-2"
-                >
-                  New Password
-                </label>
-
-                <input
+                <Input
                   id="new-password"
+                  label="New Password"
                   type="password"
-                  className="w-full px-4 py-3 bg-slate-950 border border-slate-700 rounded-xl text-white outline-none focus:border-blue-500"
                   placeholder="Enter new password"
+                  {...register('newPassword', {
+                    required: 'This field is required',
+                    minLength: {
+                      value: 8,
+                      message: 'At least 8 characters',
+                    },
+                  })}
+                  error={errors.newPassword?.message}
                 />
 
               </div>
 
               <div>
-
-                <label
-                  htmlFor="confirm-password"
-                  className="block text-sm text-slate-400 mb-2"
-                >
-                  Confirm New Password
-                </label>
-
-                <input
-                  id="confirm-password"
+                <Input
+                  id="new-password"
+                  label="New Password"
                   type="password"
-                  className="w-full px-4 py-3 bg-slate-950 border border-slate-700 rounded-xl text-white outline-none focus:border-blue-500"
-                  placeholder="Confirm new password"
+                  placeholder="Enter new password"
+                  {...register('newPassword', {
+                    required: 'This field is required',
+                    minLength: {
+                      value: 8,
+                      message: 'At least 8 characters',
+                    },
+                  })}
+                  error={errors.newPassword?.message}
                 />
 
               </div>
-
+              <Input
+                id="confirm-password"
+                label="Confirm New Password"
+                type="password"
+                placeholder="Confirm new password"
+                {...register('confirmPassword', {
+                  required: 'This field is required',
+                  validate: (value) =>
+                    value === watch('newPassword') || 'Passwords do not match',
+                })}
+                error={errors.confirmPassword?.message}
+              />
             </div>
 
             <button
-              disabled
-              className="mt-6 px-5 py-3 bg-blue-600 hover:bg-blue-700 rounded-xl font-semibold opacity-50 cursor-not-allowed"
+              type="submit"
+              className="mt-6 px-5 py-3 bg-blue-600 hover:bg-blue-700 rounded-xl font-semibold"
             >
               Update Password
             </button>
 
-          </div >
+          </form >
 
         </main >
 

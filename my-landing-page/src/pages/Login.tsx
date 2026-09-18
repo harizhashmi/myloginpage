@@ -1,4 +1,5 @@
 import { useState } from "react"
+import Input from '../components/Input'
 
 type LoginProps = {
   onLogin: (credentials: {
@@ -51,34 +52,22 @@ function Login({ onLogin }: LoginProps) {
           <form onSubmit={handleSubmit}>
 
             <div className="mb-5">
-              <label
-                htmlFor="email"
-                className="block text-sm text-slate-300 mb-2"
-              >
-                Email
-              </label>
-
-              <input
+              <Input
                 id="email"
+                label="email"
                 type="email"
                 value={email}
                 onChange={(event) => setEmail(event.target.value)}
-                placeholder="you@example.com"
+                placeholder="Enter your email"
                 required
                 className="w-full px-4 py-3 bg-slate-950 border border-slate-700 rounded-xl text-white outline-none focus:border-blue-500"
               />
             </div>
 
             <div className="mb-6">
-              <label
-                htmlFor="password"
-                className="block text-sm text-slate-300 mb-2"
-              >
-                Password
-              </label>
-
-              <input
+              <Input
                 id="password"
+                label="password"
                 type="password"
                 value={password}
                 onChange={(event) => setPassword(event.target.value)}

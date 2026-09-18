@@ -1,6 +1,7 @@
 import type { User } from '../types'
 import { Link } from 'react-router'
 
+
 type HeaderProps = {
   title: string
   onLogout: () => void
