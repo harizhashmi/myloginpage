@@ -1,5 +1,6 @@
 import { useState } from "react"
 import Input from '../components/Input'
+import { Link } from 'react-router'
 
 type LoginProps = {
   onLogin: (credentials: {
@@ -87,8 +88,19 @@ function Login({ onLogin }: LoginProps) {
             {error && (
               <p className="text-red-500 text-sm mt-4">
                 {error}
+
               </p>
             )}
+
+            <p className="text-center text-sm text-slate-400 mt-6">
+              Don't have an account?{' '}
+              <Link
+                to="/register"
+                className="text-blue-400 hover:text-blue-300 font-semibold"
+              >
+                Create account
+              </Link>
+            </p>
 
           </form>
 
