@@ -22,11 +22,12 @@ function App() {
     localStorage.setItem('isLoggedIn', String(isLoggedIn))
   }, [isLoggedIn])
 
-  const user: User = {
+  const [user, setUser] = useState<User>({
     name: 'Hariz Hashmi',
     email: 'hariz@example.com',
+    phone: '+60 12-345 6789',
     role: 'administrator',
-  }
+  })
 
   const navigate = useNavigate()
 
@@ -87,6 +88,7 @@ function App() {
             <Profile
               user={user}
               onLogout={handleLogout}
+              onUpdateUser={setUser}
             />
           </ProtectedRoute>
         }
