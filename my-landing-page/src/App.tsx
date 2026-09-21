@@ -3,10 +3,10 @@ import Login from './pages/Login'
 import Dashboard from './pages/Dashboard'
 import Profile from './pages/Profile'
 import type { User } from './types'
-import { useEffect, useState } from 'react'
 import ProtectedRoute from './components/protectedRoute'
 import NotFound from './pages/NotFound'
 import Register from './pages/Register'
+import useLocalStorage from './hooks/useLocalStorage'
 
 
 type LoginCredentials = {
@@ -15,17 +15,14 @@ type LoginCredentials = {
 }
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(() => {
-    return localStorage.getItem('isLoggedIn') === 'true'
-  })
-
-  useEffect(() => {
-    localStorage.setItem('isLoggedIn', String(isLoggedIn))
-  }, [isLoggedIn])
-
-  const [user, setUser] = useState<User>({
+  const [isLoggedIn, setIsLoggedIn] = useLocalStorage(
+    'isLoggedIn',
+    false
+  )
+  const [user, setUser] = useLocalStorage<User>('user', {
     name: 'Hariz Hashmi',
     email: 'hariz@example.com',
+    password: '',
     phone: '+60 12-345 6789',
     role: 'administrator',
   })
@@ -33,22 +30,7 @@ function App() {
   const navigate = useNavigate()
 
   function handleLogin({ email, password }: LoginCredentials) {
-    const savedUser = localStorage.getItem('user')
-
-    if (!savedUser) {
-      return false
-    }
-
-    const user = JSON.parse(savedUser)
-
     if (email === user.email && password === user.password) {
-      setUser({
-        name: user.name,
-        email: user.email,
-        phone: '+60 12-345 6789',
-        role: 'administrator',
-      })
-
       setIsLoggedIn(true)
       navigate('/dashboard')
       return true
@@ -81,7 +63,22 @@ function App() {
 
       />
 
-      <Route path="/register" element={<Register />} />
+      <Route
+        path="/register"
+        element={
+          <Register
+            onRegister={(newUser) => {
+              setUser({
+                ...newUser,
+                phone: '',
+                role: 'user',
+              })
+
+              navigate('/login')
+            }}
+          />
+        }
+      />
 
       <Route
         path="/dashboard"
