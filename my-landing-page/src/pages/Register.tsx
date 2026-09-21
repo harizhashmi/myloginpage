@@ -1,5 +1,5 @@
 import Input from '../components/Input'
-import { Link, useNavigate } from 'react-router'
+import { Link } from 'react-router'
 import { useForm } from 'react-hook-form'
 
 type RegisterFormValues = {
@@ -8,10 +8,12 @@ type RegisterFormValues = {
     password: string
 }
 
+type RegisterProps = {
+    onRegister: (user: RegisterFormValues) => void
+}
 
-function Register() {
 
-    const navigate = useNavigate()
+function Register({ onRegister }: RegisterProps) {
 
     const {
         register,
@@ -20,8 +22,7 @@ function Register() {
     } = useForm<RegisterFormValues>()
 
     function onSubmit(data: RegisterFormValues) {
-        localStorage.setItem('user', JSON.stringify(data))
-        navigate('/login')
+        onRegister(data)
     }
 
     return (
