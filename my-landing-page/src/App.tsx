@@ -1,55 +1,72 @@
-import { Routes, Route, useNavigate, Navigate } from 'react-router'
-import Login from './pages/Login'
-import Dashboard from './pages/Dashboard'
-import Profile from './pages/Profile'
-import type { User } from './types'
-import ProtectedRoute from './components/protectedRoute'
-import NotFound from './pages/NotFound'
-import Register from './pages/Register'
-import useLocalStorage from './hooks/useLocalStorage'
-
+import { Routes, Route, useNavigate, Navigate } from "react-router";
+import Login from "./pages/Login";
+import Dashboard from "./pages/Dashboard";
+import Profile from "./pages/Profile";
+import type { User } from "./types";
+import ProtectedRoute from "./components/protectedRoute";
+import NotFound from "./pages/NotFound";
+import Register from "./pages/Register";
+import useLocalStorage from "./hooks/useLocalStorage";
 
 type LoginCredentials = {
-  email: string
-  password: string
-}
+  email: string;
+  password: string;
+};
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useLocalStorage(
-    'isLoggedIn',
-    false
-  )
-  const [user, setUser] = useLocalStorage<User>('user', {
-    name: 'Hariz Hashmi',
-    email: 'hariz@example.com',
-    password: '',
-    phone: '+60 12-345 6789',
-    role: 'administrator',
-  })
+  const [isLoggedIn, setIsLoggedIn] = useLocalStorage("isLoggedIn", false);
+  const [user, setUser] = useLocalStorage<User>("user", {
+    name: "Hariz Hashmi",
+    email: "hariz@example.com",
+    password: "",
+    phone: "+60 12-345 6789",
+    role: "administrator",
+  });
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
-  function handleLogin({ email, password }: LoginCredentials) {
-    if (email === user.email && password === user.password) {
-      setIsLoggedIn(true)
-      navigate('/dashboard')
-      return true
+  async function handleLogin({ email, password }: LoginCredentials) {
+    const response = await fetch("http://localhost:3000/auth/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email,
+        password,
+      }),
+    });
+
+    if (!response.ok) {
+      return false;
     }
 
-    return false
+    const data = await response.json();
+
+    localStorage.setItem("access_token", data.access_token);
+    console.log(data);
+
+    setUser({
+      name: data.user.name,
+      email: data.user.email,
+      role: "user",
+      phone: "",
+      password: "",
+    });
+
+    setIsLoggedIn(true);
+    navigate("/dashboard");
+
+    return true;
   }
 
   function handleLogout() {
-    setIsLoggedIn(false)
-    navigate('/')
+    setIsLoggedIn(false);
+    navigate("/");
   }
   return (
     <Routes>
-
-      <Route
-        path="/"
-        element={<Login onLogin={handleLogin} />}
-      />
+      <Route path="/" element={<Login onLogin={handleLogin} />} />
 
       <Route
         path="/login"
@@ -60,7 +77,6 @@ function App() {
             <Login onLogin={handleLogin} />
           )
         }
-
       />
 
       <Route
@@ -70,11 +86,11 @@ function App() {
             onRegister={(newUser) => {
               setUser({
                 ...newUser,
-                phone: '',
-                role: 'user',
-              })
+                phone: "",
+                role: "user",
+              });
 
-              navigate('/login')
+              navigate("/login");
             }}
           />
         }
@@ -84,10 +100,7 @@ function App() {
         path="/dashboard"
         element={
           <ProtectedRoute isLoggedIn={isLoggedIn}>
-            <Dashboard
-              user={user}
-              onLogout={handleLogout}
-            />
+            <Dashboard user={user} onLogout={handleLogout} />
           </ProtectedRoute>
         }
       />
@@ -107,8 +120,7 @@ function App() {
 
       <Route path="*" element={<NotFound />} />
     </Routes>
-
-  )
+  );
 }
 
-export default App
+export default App;
