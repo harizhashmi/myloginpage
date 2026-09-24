@@ -7,6 +7,7 @@ import ProtectedRoute from "./components/protectedRoute";
 import NotFound from "./pages/NotFound";
 import Register from "./pages/Register";
 import useLocalStorage from "./hooks/useLocalStorage";
+import { useEffect } from "react";
 
 type LoginCredentials = {
   email: string;
@@ -14,6 +15,31 @@ type LoginCredentials = {
 };
 
 function App() {
+  useEffect(() => {
+    const token = localStorage.getItem("access_token");
+
+    if (!token) {
+      return;
+    }
+
+    fetch("http://localhost:3000/users/me", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setUser({
+          name: data.name,
+          email: data.email,
+          role: "user",
+          phone: "",
+          password: "",
+        });
+
+        setIsLoggedIn(true);
+      });
+  }, []);
   const [isLoggedIn, setIsLoggedIn] = useLocalStorage("isLoggedIn", false);
   const [user, setUser] = useLocalStorage<User>("user", {
     name: "Hariz Hashmi",
