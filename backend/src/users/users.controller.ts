@@ -6,14 +6,33 @@ import {
   Param,
   Patch,
   Post,
+  UseGuards,
+  Req,
 } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UsersService } from './users.service';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
+
+  @Get('me')
+  @UseGuards(AuthGuard('jwt'))
+  async getMe(@Req() request: any) {
+    const user = await this.usersService.getUser(request.user.userId);
+
+    if (!user) {
+      return null;
+    }
+
+    return {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+    };
+  }
 
   @Get()
   getUsers() {
