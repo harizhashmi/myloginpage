@@ -22,7 +22,13 @@ export class AuthService {
       password: hashedPassword,
     });
 
-    return this.usersRepository.save(newUser);
+    const savedUser = await this.usersRepository.save(newUser);
+
+    return {
+      id: savedUser.id,
+      name: savedUser.name,
+      email: savedUser.email,
+    };
   }
   async findByEmail(email: string) {
     return this.usersRepository.findOneBy({ email });
