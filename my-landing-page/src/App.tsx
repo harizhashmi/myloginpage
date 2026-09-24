@@ -27,8 +27,20 @@ function App() {
         Authorization: `Bearer ${token}`,
       },
     })
-      .then((response) => response.json())
+      .then((response) => {
+        if (!response.ok) {
+          localStorage.removeItem("access_token");
+          setIsLoggedIn(false);
+          return null;
+        }
+
+        return response.json();
+      })
       .then((data) => {
+        if (!data) {
+          return;
+        }
+
         setUser({
           name: data.name,
           email: data.email,
