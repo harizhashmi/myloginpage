@@ -40,7 +40,6 @@ function App() {
         if (!data) {
           return;
         }
-        console.log("Authenticated user:", data);
         setUser({
           name: data.name,
           email: data.email,
