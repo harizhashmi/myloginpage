@@ -15,7 +15,6 @@ export class AuthService {
     private readonly usersRepository: Repository<User>,
     private readonly jwtService: JwtService,
   ) {}
-
   async register(name: string, email: string, password: string) {
     try {
       const hashedPassword = await bcrypt.hash(password, 10);
@@ -33,8 +32,12 @@ export class AuthService {
         name: savedUser.name,
         email: savedUser.email,
       };
-    } catch (error) {
-      throw new ConflictException('Email already exists');
+    } catch (error: any) {
+      if (error.code === '23505') {
+        throw new ConflictException('Email already exists');
+      }
+
+      throw error;
     }
   }
 
