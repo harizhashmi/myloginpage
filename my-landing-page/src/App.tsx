@@ -75,7 +75,9 @@ function App() {
     });
 
     if (!response.ok) {
-      return false;
+      const data = await response.json();
+
+      return data.message;
     }
 
     const data = await response.json();
@@ -121,14 +123,27 @@ function App() {
         path="/register"
         element={
           <Register
-            onRegister={(newUser) => {
-              setUser({
-                ...newUser,
-                phone: "",
-                role: "user",
-              });
+            onRegister={async (newUser) => {
+              const response = await fetch(
+                "http://localhost:3000/auth/register",
+                {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify(newUser),
+                },
+              );
+
+              if (!response.ok) {
+                const data = await response.json();
+
+                return data.message;
+              }
 
               navigate("/login");
+
+              return true;
             }}
           />
         }

@@ -1,116 +1,115 @@
-import Input from '../components/Input'
-import { Link } from 'react-router'
-import { useForm } from 'react-hook-form'
+import Input from "../components/Input";
+import { Link } from "react-router";
+import { useForm } from "react-hook-form";
+import { useState } from "react";
 
 type RegisterFormValues = {
-    name: string
-    email: string
-    password: string
-}
+  name: string;
+  email: string;
+  password: string;
+};
 
 type RegisterProps = {
-    onRegister: (user: RegisterFormValues) => void
-}
-
+  onRegister: (user: RegisterFormValues) => Promise<boolean | string>;
+};
 
 function Register({ onRegister }: RegisterProps) {
+  const [serverError, setServerError] = useState("");
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<RegisterFormValues>();
 
-    const {
-        register,
-        handleSubmit,
-        formState: { errors },
-    } = useForm<RegisterFormValues>()
+  async function onSubmit(data: RegisterFormValues) {
+    const result = await onRegister(data);
 
-    function onSubmit(data: RegisterFormValues) {
-        onRegister(data)
+    if (result !== true) {
+      setServerError(String(result));
     }
+  }
+  return (
+    <div className="min-h-screen bg-slate-950 text-white flex items-center justify-center p-6">
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="w-full max-w-md bg-slate-900 border border-slate-800 rounded-2xl p-8"
+      >
+        <div className="text-center mb-8">
+          <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-blue-600 mb-4">
+            <span className="text-2xl font-bold text-white">M</span>
+          </div>
 
-    return (
-        <div className="min-h-screen bg-slate-950 text-white flex items-center justify-center p-6">
-            <form
-                onSubmit={handleSubmit(onSubmit)}
-                className="w-full max-w-md bg-slate-900 border border-slate-800 rounded-2xl p-8"
-            >
+          <h1 className="text-3xl font-bold text-white">Create your account</h1>
 
-                <div className="text-center mb-8">
-                    <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-blue-600 mb-4">
-                        <span className="text-2xl font-bold text-white">
-                            M
-                        </span>
-                    </div>
-
-                    <h1 className="text-3xl font-bold text-white">
-                        Create your account
-                    </h1>
-
-                    <p className="text-slate-400 mt-2">
-                        Get started with MyApp
-                    </p>
-                </div>
-
-                <div className="space-y-4">
-                    <Input
-                        id="register-name"
-                        label="Full Name"
-                        type="text"
-                        placeholder="Enter your name"
-                        {...register('name', {
-                            required: 'This field is required',
-                        })}
-                        error={errors.name?.message}
-                    />
-
-                    <Input
-                        id="register-email"
-                        label="Email"
-                        type="email"
-                        placeholder="Enter your email"
-                        {...register('email', {
-                            required: 'This field is required',
-                            pattern: {
-                                value: /\S+@\S+\.\S+/,
-                                message: 'Enter a valid email',
-                            },
-                        })}
-                        error={errors.email?.message}
-                    />
-
-                    <Input
-                        id="register-password"
-                        label="Password"
-                        type="password"
-                        placeholder="Enter your password"
-                        {...register('password', {
-                            required: 'This field is required',
-                            minLength: {
-                                value: 8,
-                                message: 'At least 8 characters',
-                            },
-                        })}
-                        error={errors.password?.message}
-                    />
-                </div>
-
-                <button
-                    type="submit"
-                    className="mt-6 w-full px-5 py-3 bg-blue-600 hover:bg-blue-700 rounded-xl font-semibold"
-                >
-                    Create Account
-                </button>
-
-                <p className="mt-6 text-center text-sm text-slate-400">
-                    Already have an account?{' '}
-                    <Link
-                        to="/login"
-                        className="text-blue-400 hover:text-blue-300 font-semibold"
-                    >
-                        Log in
-                    </Link>
-                </p>
-
-            </form>
+          <p className="text-slate-400 mt-2">Get started with MyApp</p>
         </div>
-    )
+
+        <div className="space-y-4">
+          <Input
+            id="register-name"
+            label="Full Name"
+            type="text"
+            placeholder="Enter your name"
+            {...register("name", {
+              required: "This field is required",
+            })}
+            error={errors.name?.message}
+          />
+
+          <Input
+            id="register-email"
+            label="Email"
+            type="email"
+            placeholder="Enter your email"
+            {...register("email", {
+              required: "This field is required",
+              pattern: {
+                value: /\S+@\S+\.\S+/,
+                message: "Enter a valid email",
+              },
+            })}
+            error={errors.email?.message}
+          />
+
+          <Input
+            id="register-password"
+            label="Password"
+            type="password"
+            placeholder="Enter your password"
+            {...register("password", {
+              required: "This field is required",
+              minLength: {
+                value: 8,
+                message: "At least 8 characters",
+              },
+            })}
+            error={errors.password?.message}
+          />
+        </div>
+
+        <button
+          type="submit"
+          className="mt-6 w-full px-5 py-3 bg-blue-600 hover:bg-blue-700 rounded-xl font-semibold"
+        >
+          Create Account
+        </button>
+
+        {serverError && (
+          <p className="mt-4 text-center text-sm text-red-400">{serverError}</p>
+        )}
+
+        <p className="mt-6 text-center text-sm text-slate-400">
+          Already have an account?{" "}
+          <Link
+            to="/login"
+            className="text-blue-400 hover:text-blue-300 font-semibold"
+          >
+            Log in
+          </Link>
+        </p>
+      </form>
+    </div>
+  );
 }
 
-export default Register
+export default Register;
