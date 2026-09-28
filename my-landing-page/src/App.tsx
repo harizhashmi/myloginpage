@@ -98,6 +98,7 @@ function App() {
   }
 
   function handleLogout() {
+    localStorage.removeItem("access_token");
     setIsLoggedIn(false);
     navigate("/");
   }
