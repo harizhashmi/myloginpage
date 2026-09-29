@@ -40,6 +40,7 @@ function App() {
         if (!data) {
           return;
         }
+
         setUser({
           id: data.id,
           name: data.name,
@@ -87,6 +88,57 @@ function App() {
     navigate("/dashboard");
 
     return true;
+  }
+
+  async function handleUpdateUser(values: User) {
+    const token = localStorage.getItem("access_token");
+
+    if (!token) {
+      return;
+    }
+
+    const response = await fetch(`http://localhost:3000/users/${values.id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        name: values.name,
+        email: values.email,
+      }),
+    });
+
+    if (!response.ok) {
+      return;
+    }
+
+    setUser(values);
+  }
+
+  async function handleDeleteUser() {
+    console.log("User being deleted:", user);
+    const token = localStorage.getItem("access_token");
+
+    if (!token || !user) {
+      return;
+    }
+
+    const response = await fetch(`http://localhost:3000/users/${user.id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      return;
+    }
+
+    localStorage.removeItem("access_token");
+    setUser(null);
+    setIsLoggedIn(false);
+    navigate("/");
   }
 
   function handleLogout() {
@@ -157,7 +209,8 @@ function App() {
               <Profile
                 user={user}
                 onLogout={handleLogout}
-                onUpdateUser={setUser}
+                onUpdateUser={handleUpdateUser}
+                onDeleteUser={handleDeleteUser}
               />
             )}
           </ProtectedRoute>

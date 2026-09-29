@@ -18,7 +18,8 @@ type PasswordFormValues = {
 type ProfileProps = {
   user: User;
   onLogout: () => void;
-  onUpdateUser: (user: User) => void;
+  onUpdateUser: (user: User) => Promise<void>;
+  onDeleteUser: () => Promise<void>;
 };
 
 function InfoField({ label, value }: InfoFieldProps) {
@@ -31,7 +32,7 @@ function InfoField({ label, value }: InfoFieldProps) {
   );
 }
 
-function Profile({ user, onLogout, onUpdateUser }: ProfileProps) {
+function Profile({ user, onLogout, onUpdateUser, onDeleteUser }: ProfileProps) {
   const [isEditing, setIsEditing] = useState(false);
 
   const {
@@ -51,8 +52,8 @@ function Profile({ user, onLogout, onUpdateUser }: ProfileProps) {
     defaultValues: user,
   });
 
-  function onSubmitProfile(values: User) {
-    onUpdateUser(values);
+  async function onSubmitProfile(values: User) {
+    await onUpdateUser(values);
     setIsEditing(false);
   }
 
@@ -162,6 +163,22 @@ function Profile({ user, onLogout, onUpdateUser }: ProfileProps) {
               className="mt-8 px-5 py-3 bg-blue-600 hover:bg-blue-700 rounded-xl opacity-50 "
             >
               Edit Profile
+            </button>
+
+            <button
+              type="button"
+              onClick={() => {
+                const confirmed = window.confirm(
+                  "Are you sure you want to delete your account?",
+                );
+
+                if (confirmed) {
+                  onDeleteUser();
+                }
+              }}
+              className="mt-4 px-5 py-3 bg-red-600 hover:bg-red-700 rounded-xl"
+            >
+              Delete Account
             </button>
           </div>
 
