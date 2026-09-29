@@ -6,8 +6,8 @@ import type { User } from "./types";
 import ProtectedRoute from "./components/protectedRoute";
 import NotFound from "./pages/NotFound";
 import Register from "./pages/Register";
-import useLocalStorage from "./hooks/useLocalStorage";
 import { useEffect } from "react";
+import { useState } from "react";
 
 type LoginCredentials = {
   email: string;
@@ -41,24 +41,16 @@ function App() {
           return;
         }
         setUser({
+          id: data.id,
           name: data.name,
           email: data.email,
-          role: "user",
-          phone: "",
-          password: "",
         });
 
         setIsLoggedIn(true);
       });
   }, []);
-  const [isLoggedIn, setIsLoggedIn] = useLocalStorage("isLoggedIn", false);
-  const [user, setUser] = useLocalStorage<User>("user", {
-    name: "Hariz Hashmi",
-    email: "hariz@example.com",
-    password: "",
-    phone: "+60 12-345 6789",
-    role: "administrator",
-  });
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
 
   const navigate = useNavigate();
 
@@ -86,11 +78,9 @@ function App() {
     console.log(data);
 
     setUser({
+      id: data.user.id,
       name: data.user.name,
       email: data.user.email,
-      role: "user",
-      phone: "",
-      password: "",
     });
 
     setIsLoggedIn(true);
@@ -101,6 +91,7 @@ function App() {
 
   function handleLogout() {
     localStorage.removeItem("access_token");
+    setUser(null);
     setIsLoggedIn(false);
     navigate("/");
   }
@@ -153,7 +144,7 @@ function App() {
         path="/dashboard"
         element={
           <ProtectedRoute isLoggedIn={isLoggedIn}>
-            <Dashboard user={user} onLogout={handleLogout} />
+            {user && <Dashboard user={user} onLogout={handleLogout} />}
           </ProtectedRoute>
         }
       />
@@ -162,11 +153,13 @@ function App() {
         path="/profile"
         element={
           <ProtectedRoute isLoggedIn={isLoggedIn}>
-            <Profile
-              user={user}
-              onLogout={handleLogout}
-              onUpdateUser={setUser}
-            />
+            {user && (
+              <Profile
+                user={user}
+                onLogout={handleLogout}
+                onUpdateUser={setUser}
+              />
+            )}
           </ProtectedRoute>
         }
       />
