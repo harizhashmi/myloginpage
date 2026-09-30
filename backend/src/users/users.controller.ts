@@ -3,16 +3,14 @@ import {
   Controller,
   Delete,
   Get,
-  Param,
   Patch,
-  Post,
-  UseGuards,
   Req,
+  UseGuards,
 } from '@nestjs/common';
-import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UsersService } from './users.service';
 import { AuthGuard } from '@nestjs/passport';
+import type { AuthenticatedRequest } from '../auth/authenticated-request';
 
 @Controller('users')
 @UseGuards(AuthGuard('jwt'))
@@ -20,32 +18,20 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Get('me')
-  async getMe(@Req() request: any) {
+  async getMe(@Req() request: AuthenticatedRequest) {
     return this.usersService.getUser(request.user.userId);
   }
 
-  @Get()
-  getUsers() {
-    return this.usersService.getUsers();
+  @Patch('me')
+  updateUser(
+    @Req() request: AuthenticatedRequest,
+    @Body() user: UpdateUserDto,
+  ) {
+    return this.usersService.updateUser(request.user.userId, user);
   }
 
-  @Get(':id')
-  getUser(@Param('id') id: string) {
-    return this.usersService.getUser(Number(id));
-  }
-
-  @Post()
-  createUser(@Body() user: CreateUserDto) {
-    return this.usersService.createUser(user);
-  }
-
-  @Patch(':id')
-  updateUser(@Param('id') id: string, @Body() user: UpdateUserDto) {
-    return this.usersService.updateUser(Number(id), user);
-  }
-
-  @Delete(':id')
-  deleteUser(@Param('id') id: string) {
-    return this.usersService.deleteUser(Number(id));
+  @Delete('me')
+  deleteUser(@Req() request: AuthenticatedRequest) {
+    return this.usersService.deleteUser(request.user.userId);
   }
 }

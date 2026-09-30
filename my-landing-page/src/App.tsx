@@ -101,7 +101,7 @@ function App() {
       return;
     }
 
-    const response = await fetch(`http://localhost:3000/users/${values.id}`, {
+    const response = await fetch("http://localhost:3000/users/me", {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
@@ -128,7 +128,7 @@ function App() {
       return;
     }
 
-    const response = await fetch(`http://localhost:3000/users/${user.id}`, {
+    const response = await fetch("http://localhost:3000/users/me", {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${token}`,
