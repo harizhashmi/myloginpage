@@ -59,7 +59,7 @@ Log in with a wrong password. Nothing happens. Find out why before you fix it.
 
 Why: the type said `boolean`. The code returned a string. TypeScript let it through because `Promise<boolean>` was only a promise, and `handleLogin` never declared its return type. Add `: Promise<true | string>` to `handleLogin` and see the error appear.
 
-- [ ] Done
+- [x] Done
 
 ### 2. Lint passes again (20 min)
 
