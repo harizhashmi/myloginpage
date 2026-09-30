@@ -15,6 +15,9 @@ type LoginCredentials = {
 };
 
 function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
+
   useEffect(() => {
     const token = localStorage.getItem("access_token");
 
@@ -50,8 +53,6 @@ function App() {
         setIsLoggedIn(true);
       });
   }, []);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [user, setUser] = useState<User | null>(null);
 
   const navigate = useNavigate();
 
