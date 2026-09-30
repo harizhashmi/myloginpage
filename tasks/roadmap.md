@@ -12,10 +12,10 @@ Pattern every week: do it by hand first, feel the pain, then learn the library t
 |---|---|---|---|
 | 1 | 9 to 11 Sep | Git, state, props, components | Branch, commit, push. Form with `useState`. Split repeated markup into components. |
 | 2 | 15 to 19 Sep | TypeScript, react-router, react-hook-form | Type your props. Add a page with a URL. Validated form without `useState`. |
-| 3 | 22 to 26 Sep | Fetching data, TanStack Query | Call an API with `useEffect`. Loading, error, empty states. Replace it with `useQuery` and `useMutation`. |
-| 4 | 29 Sep to 3 Oct | Zod, testing | Zod schema + `zodResolver` on your forms. `z.infer` instead of hand-written types. First Jest + Testing Library test. |
-| 5 | 6 to 10 Oct | TanStack Router, Zustand | File-based routes with a `_layout`. Auth state in a Zustand store, no more prop drilling. |
-| 6 | 13 to 17 Oct | NestJS basics | One module: controller, service, DTO from a Zod schema, TypeORM entity, one migration. Call it from your React app. |
+| 3 | 22 to 26 Sep | NestJS backend (done early, was week 6) | Users module, bcrypt, JWT login, guarded route. Frontend talks to it. |
+| 4 | 29 Sep to 3 Oct | Review fixes, fetching data, TanStack Query | Guard every route. Loading, error, empty states with `useEffect`, then `useQuery` and `useMutation`. Toast, dialog, avatar upload. |
+| 5 | 6 to 10 Oct | Zod, testing | Zod schema + `zodResolver` on your forms. `z.infer` instead of hand-written types. First Jest + Testing Library test. |
+| 6 | 13 to 17 Oct | TanStack Router, Zustand, migrations | File-based routes with a `_layout`. Auth state in a Zustand store, no more prop drilling. Turn off `synchronize`, write one migration. |
 | 7 | 20 to 24 Oct | eMP onboarding | Clone eMP, run it with Docker Postgres, log in, read one domain from route to controller to entity. Explain it back to me. |
 | 8 | 27 to 31 Oct | eMP ticket | Pick up one EMP Jira ticket. Branch, code, test, PR, review, merge. |
 
@@ -25,15 +25,16 @@ Pattern every week: do it by hand first, feel the pain, then learn the library t
 |---|---|---|
 | Git, branches, small commits, PR | 1, 8 | done, PR in week 8 |
 | Tailwind | 1 | done |
-| TypeScript strict, no `any` | 2 | now |
-| react-hook-form | 2 | now |
-| Routing | 2 (react-router), 5 (TanStack Router) | now |
-| TanStack Query | 3 | next |
-| Zod, `@hookform/resolvers` | 4 | later |
-| Jest, Testing Library | 4 | later |
-| TanStack Router, file-based routes | 5 | later |
-| Zustand | 5 | later |
-| NestJS 11, TypeORM, PostgreSQL, migrations | 6 | later |
+| TypeScript strict, no `any` | 2 | done |
+| react-hook-form | 2 | done |
+| Routing | 2 (react-router), 6 (TanStack Router) | react-router done |
+| TanStack Query | 4 | now |
+| Zod, `@hookform/resolvers` | 5 | next |
+| Jest, Testing Library | 5 | next |
+| TanStack Router, file-based routes | 6 | later |
+| Zustand | 6 | later |
+| NestJS, TypeORM, PostgreSQL | 3 | done early |
+| Migrations | 6 | later |
 | pnpm, Turborepo, generated API client, i18n `en` + `ms`, Docker, Firebase login | 7 | on eMP itself |
 
 ## What a first eMP ticket looks like
