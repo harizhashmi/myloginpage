@@ -21,17 +21,7 @@ export class UsersController {
   @Get('me')
   @UseGuards(AuthGuard('jwt'))
   async getMe(@Req() request: any) {
-    const user = await this.usersService.getUser(request.user.userId);
-
-    if (!user) {
-      return null;
-    }
-
-    return {
-      id: user.id,
-      name: user.name,
-      email: user.email,
-    };
+    return this.usersService.getUser(request.user.userId);
   }
 
   @Get()
