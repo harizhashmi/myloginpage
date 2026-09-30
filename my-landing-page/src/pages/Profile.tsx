@@ -3,6 +3,7 @@ import type { User } from "../types";
 import Input from "../components/Input";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
+import Button from "../components/Button";
 
 type InfoFieldProps = {
   label: string;
@@ -131,12 +132,7 @@ function Profile({ user, onLogout, onUpdateUser, onDeleteUser }: ProfileProps) {
                 </div>
 
                 <div className="mt-8 flex gap-3">
-                  <button
-                    type="submit"
-                    className="px-5 py-3 bg-blue-600 hover:bg-blue-700 rounded-xl"
-                  >
-                    Save
-                  </button>
+                  <button type="submit">Save</button>
 
                   <button
                     type="button"
@@ -144,7 +140,6 @@ function Profile({ user, onLogout, onUpdateUser, onDeleteUser }: ProfileProps) {
                       resetProfile();
                       setIsEditing(false);
                     }}
-                    className="px-5 py-3 bg-slate-700 hover:bg-slate-600 rounded-xl"
                   >
                     Cancel
                   </button>
@@ -157,15 +152,12 @@ function Profile({ user, onLogout, onUpdateUser, onDeleteUser }: ProfileProps) {
                 ))}
               </div>
             )}
-            <button
-              type="button"
-              onClick={() => setIsEditing(true)}
-              className="mt-8 px-5 py-3 bg-blue-600 hover:bg-blue-700 rounded-xl opacity-50 "
-            >
+            <button type="button" onClick={() => setIsEditing(true)}>
               Edit Profile
             </button>
 
-            <button
+            <Button
+              variant="danger"
               type="button"
               onClick={() => {
                 const confirmed = window.confirm(
@@ -176,10 +168,9 @@ function Profile({ user, onLogout, onUpdateUser, onDeleteUser }: ProfileProps) {
                   onDeleteUser();
                 }
               }}
-              className="mt-4 px-5 py-3 bg-red-600 hover:bg-red-700 rounded-xl"
             >
               Delete Account
-            </button>
+            </Button>
           </div>
 
           {/* Change Password */}
@@ -234,12 +225,7 @@ function Profile({ user, onLogout, onUpdateUser, onDeleteUser }: ProfileProps) {
               />
             </div>
 
-            <button
-              type="submit"
-              className="mt-6 px-5 py-3 bg-blue-600 hover:bg-blue-700 rounded-xl font-semibold"
-            >
-              Update Password
-            </button>
+            <button type="submit">Update Password</button>
           </form>
         </main>
       </div>

@@ -67,12 +67,7 @@ function Login({ onLogin }: LoginProps) {
               />
             </div>
 
-            <button
-              type="submit"
-              className="w-full py-3 bg-blue-600 hover:bg-blue-700 rounded-xl text-white font-semibold"
-            >
-              Sign in
-            </button>
+            <button type="submit">Sign in</button>
 
             {error && <p className="text-red-500 text-sm mt-4">{error}</p>}
 

@@ -87,12 +87,7 @@ function Register({ onRegister }: RegisterProps) {
           />
         </div>
 
-        <button
-          type="submit"
-          className="mt-6 w-full px-5 py-3 bg-blue-600 hover:bg-blue-700 rounded-xl font-semibold"
-        >
-          Create Account
-        </button>
+        <button type="submit">Create Account</button>
 
         {serverError && (
           <p className="mt-4 text-center text-sm text-red-400">{serverError}</p>

@@ -39,12 +39,7 @@ function Header({ title, onLogout, user }: HeaderProps) {
           </Link>
         )}
 
-        <button
-          onClick={onLogout}
-          className="px-4 py-2 bg-slate-800 hover:bg-slate-700 rounded-lg"
-        >
-          Logout
-        </button>
+        <button onClick={onLogout}>Logout</button>
       </div>
     </header>
   );
