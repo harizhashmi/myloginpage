@@ -75,7 +75,7 @@ Two errors: `setIsLoggedIn` and `setUser` are used inside `useEffect` on lines 3
 
 Why: hooks run top to bottom. React only lets you use a value after the line that creates it.
 
-- [ ] Done
+- [x] Done
 
 ### 3. Stop leaking password hashes (45 min)
 
@@ -92,7 +92,7 @@ Look at the output. Every password hash is there. No token needed.
 
 Why: you strip the password in 3 places by hand and forgot the 4th. Do it once, at the source.
 
-- [ ] Done
+- [x] Done
 
 ### 4. Guard every user route (45 min)
 
@@ -109,11 +109,11 @@ That works with no token. Anyone on the internet can delete your account.
 5. Replace `request: any`. Make `src/auth/authenticated-request.ts`:
 
 ```ts
-import type { Request } from 'express'
+import type { Request } from "express";
 
 export type AuthenticatedRequest = Request & {
-  user: { userId: number; email: string }
-}
+  user: { userId: number; email: string };
+};
 ```
 
 Why: "protected" means the server checks. The frontend hiding a button is not protection. Task 4 point 3 is the important one. Say it back to me on Friday.
@@ -150,25 +150,25 @@ Count the `<button>` tags: 8. Every one repeats `px-5 py-3 bg-blue-600 hover:bg-
 1. Make `src/components/Button.tsx`, same shape as `Input`:
 
 ```tsx
-import type { ComponentProps } from 'react'
+import type { ComponentProps } from "react";
 
-type ButtonProps = ComponentProps<'button'> & {
-  variant?: 'primary' | 'secondary' | 'danger'
-}
+type ButtonProps = ComponentProps<"button"> & {
+  variant?: "primary" | "secondary" | "danger";
+};
 
 const variants = {
-  primary: 'bg-blue-600 hover:bg-blue-700',
-  secondary: 'bg-slate-700 hover:bg-slate-600',
-  danger: 'bg-red-600 hover:bg-red-700',
-}
+  primary: "bg-blue-600 hover:bg-blue-700",
+  secondary: "bg-slate-700 hover:bg-slate-600",
+  danger: "bg-red-600 hover:bg-red-700",
+};
 
-function Button({ variant = 'primary', className = '', ...rest }: ButtonProps) {
+function Button({ variant = "primary", className = "", ...rest }: ButtonProps) {
   return (
     <button
       className={`px-5 py-3 rounded-xl font-semibold disabled:opacity-50 disabled:cursor-not-allowed ${variants[variant]} ${className}`}
       {...rest}
     />
-  )
+  );
 }
 ```
 
@@ -268,23 +268,26 @@ Why: every list on eMP has these three states. The one you forget is the one the
 1. Make `src/api.ts`:
 
 ```ts
-const BASE_URL = 'http://localhost:3000'
+const BASE_URL = "http://localhost:3000";
 
-export async function apiFetch<T>(path: string, init: RequestInit = {}): Promise<T> {
-  const token = localStorage.getItem('access_token')
+export async function apiFetch<T>(
+  path: string,
+  init: RequestInit = {},
+): Promise<T> {
+  const token = localStorage.getItem("access_token");
   const response = await fetch(BASE_URL + path, {
     ...init,
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
       ...init.headers,
     },
-  })
+  });
   if (!response.ok) {
-    const body = await response.json()
-    throw new Error(body.message ?? response.statusText)
+    const body = await response.json();
+    throw new Error(body.message ?? response.statusText);
   }
-  return response.json()
+  return response.json();
 }
 ```
 
@@ -321,9 +324,9 @@ Read once, 5 min: https://tanstack.com/query/latest/docs/framework/react/quick-s
 ```ts
 export function useDashboardStats() {
   return useQuery({
-    queryKey: ['dashboard-stats'],
-    queryFn: () => apiFetch<DashboardStats>('/users/stats'),
-  })
+    queryKey: ["dashboard-stats"],
+    queryFn: () => apiFetch<DashboardStats>("/users/stats"),
+  });
 }
 ```
 
