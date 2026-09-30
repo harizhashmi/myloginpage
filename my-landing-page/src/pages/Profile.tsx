@@ -38,7 +38,7 @@ function Profile({ user, onLogout, onUpdateUser, onDeleteUser }: ProfileProps) {
   const {
     register,
     handleSubmit,
-    watch,
+    getValues,
     reset,
     formState: { errors },
   } = useForm<PasswordFormValues>();
@@ -227,7 +227,8 @@ function Profile({ user, onLogout, onUpdateUser, onDeleteUser }: ProfileProps) {
                 {...register("confirmPassword", {
                   required: "This field is required",
                   validate: (value) =>
-                    value === watch("newPassword") || "Passwords do not match",
+                    value === getValues("newPassword") ||
+                    "Passwords do not match",
                 })}
                 error={errors.confirmPassword?.message}
               />
