@@ -29,7 +29,7 @@ You went further than the plan. Week 2 was TypeScript, router, react-hook-form. 
 
 1. Wrong password shows no error. → Task 1
 2. `npm run lint` fails with 2 errors in `App.tsx`. Hooks are called before `useState` declares them. → Task 2
-3. `Update Password` does `console.log` and nothing else. The button looks real. It is not. → Task 12
+3. `Update Password` does `console.log` and nothing else. The button looks real. It is not. → Task 15
 4. Backend leaks. `GET /users` returns every user **with the password hash**. `PATCH /users/:id` and `DELETE /users/:id` have no guard, so anyone can edit or delete anyone. → Tasks 3, 4
 5. Commit messages: `impement delete in the page`, `make the catch is only for`. Read your message once before you press enter.
 
@@ -45,7 +45,7 @@ Push to `learning/week-4` at the end of every day.
 
 ---
 
-## Wednesday — Bugs and security (about 4 hours)
+## Wednesday — Bugs, security, components (about 5 hours)
 
 ### 1. Wrong password shows no error (30 min)
 
@@ -141,7 +141,70 @@ Why: `any` turns TypeScript off for that line. `unknown` makes you prove what it
 
 - [ ] Done
 
-**Wednesday done when:** wrong password shows an error, lint passes in both packages, `curl` without a token gets 401 on every `/users` route, zero `any` in the repo. Pushed.
+### Afternoon: build the components once
+
+### 6. One `Button` (45 min)
+
+Count the `<button>` tags: 8. Every one repeats `px-5 py-3 bg-blue-600 hover:bg-blue-700 rounded-xl`, or the slate or red version of it.
+
+1. Make `src/components/Button.tsx`, same shape as `Input`:
+
+```tsx
+import type { ComponentProps } from 'react'
+
+type ButtonProps = ComponentProps<'button'> & {
+  variant?: 'primary' | 'secondary' | 'danger'
+}
+
+const variants = {
+  primary: 'bg-blue-600 hover:bg-blue-700',
+  secondary: 'bg-slate-700 hover:bg-slate-600',
+  danger: 'bg-red-600 hover:bg-red-700',
+}
+
+function Button({ variant = 'primary', className = '', ...rest }: ButtonProps) {
+  return (
+    <button
+      className={`px-5 py-3 rounded-xl font-semibold disabled:opacity-50 disabled:cursor-not-allowed ${variants[variant]} ${className}`}
+      {...rest}
+    />
+  )
+}
+```
+
+2. Replace all 8. `className` is only for layout, like `w-full` or `mt-6`. Colours come from `variant`.
+3. Search the repo for `bg-blue-600 hover`. One result: `Button.tsx`.
+
+Why: `disabled:opacity-50` in one place means a disabled button always looks disabled, and an enabled one never does. That is the Edit Profile bug from the review, fixed for every button at once.
+
+- [ ] Done
+
+### 7. One `Card` (20 min)
+
+`bg-slate-900 border border-slate-800 rounded-2xl` appears 7 times across 4 pages.
+
+1. `src/components/Card.tsx`. Props: `children`, `className?`. Padding stays inside the card: `p-8`. Pass `className` for margins like `mt-6`.
+2. Replace all 7.
+
+Why: when the design changes the card radius, you change one line.
+
+- [ ] Done
+
+### 8. `Input` owns its look (20 min)
+
+Open `Input.tsx`. The label is `text-gray-700` and the input has a `gray-300` border. Those are light-theme colours on a dark page. `Login.tsx` fixes it by passing its own `className`, which overrides yours through `{...rest}`. `Profile.tsx` and `Register.tsx` do not, so they look different.
+
+1. Move the dark classes from `Login.tsx` into `Input.tsx`. Label: `text-sm font-medium text-slate-400 mb-2`.
+2. Delete the `className` prop from every `<Input>` in the pages.
+3. Click every page. Every input looks the same.
+
+Why: a component that needs the parent to style it is not a component yet. The pages were doing `Input`'s job.
+
+**Checkpoint:** `src/components/` has `Button`, `Card`, `Input`. Zero `<button>` tags outside `Button.tsx`. Commit each component on its own.
+
+- [ ] Done
+
+**Wednesday done when:** wrong password shows an error, lint passes in both packages, `curl` without a token gets 401 on every `/users` route, zero `any` in the repo, three shared components. Pushed.
 
 ---
 
@@ -151,7 +214,7 @@ You skipped week 3 on the roadmap. Fetching with `useEffect` is what you did in 
 
 ### Morning: dashboard shows real data
 
-### 6. Remove the `← Back` button (10 min)
+### 9. Remove the `← Back` button (10 min)
 
 `Header.tsx` line 14. It always links to `/dashboard`. On the Dashboard page it links to itself.
 
@@ -162,7 +225,7 @@ Why: a button that goes nowhere teaches the user that buttons here do nothing.
 
 - [ ] Done
 
-### 7. Backend: one endpoint for the dashboard (45 min)
+### 10. Backend: one endpoint for the dashboard (45 min)
 
 The dashboard has no orders and no revenue. There is one table: `user`. So the dashboard shows what exists.
 
@@ -183,7 +246,7 @@ Why: the frontend should ask one question and get one answer. Three fetches for 
 
 - [ ] Done
 
-### 8. Frontend: fetch it with `useEffect` (1 hour)
+### 11. Frontend: fetch it with `useEffect` (1 hour)
 
 1. Make `src/hooks/useDashboardStats.ts`. Copy the shape of the `/users/me` fetch in `App.tsx`. Return `{ data, isLoading, error }`.
 2. Type the response. `src/types.ts` gets `DashboardStats`. No `any`. No `as`.
@@ -198,7 +261,7 @@ Why: every list on eMP has these three states. The one you forget is the one the
 
 ### Afternoon: the token in one place
 
-### 9. One `apiFetch` (45 min)
+### 12. One `apiFetch` (45 min)
 
 `App.tsx` has 5 `fetch` calls. Each one builds `http://localhost:3000`, reads `localStorage`, sets `Authorization`. That is the same 6 lines 5 times.
 
@@ -240,7 +303,7 @@ Why: when the URL changes for production, you change one line. `<T>` is the same
 
 ### Morning: replace `useEffect` with `useQuery`
 
-### 10. Install and wrap (15 min)
+### 13. Install and wrap (15 min)
 
 ```bash
 cd my-landing-page
@@ -253,7 +316,7 @@ Read once, 5 min: https://tanstack.com/query/latest/docs/framework/react/quick-s
 
 - [ ] Done
 
-### 11. `useDashboardStats` becomes `useQuery` (45 min)
+### 14. `useDashboardStats` becomes `useQuery` (45 min)
 
 ```ts
 export function useDashboardStats() {
@@ -272,7 +335,7 @@ Why: `useEffect` + 3 `useState` for every fetch is what everyone writes first, a
 
 - [ ] Done
 
-### 12. Update Password really updates (45 min)
+### 15. Update Password really updates (45 min)
 
 Right now `onSubmit` in `Profile.tsx` line 60 is `console.log`.
 
@@ -288,19 +351,19 @@ Why: a button that looks clickable and does nothing is the same bug as the `← 
 
 ### Afternoon: Profile polish
 
-### 13. Buttons that look right (20 min)
+### 16. Buttons that look right (15 min)
 
 `Profile.tsx` lines 160 to 183.
 
-1. Remove `opacity-50` from Edit Profile. It is not disabled.
-2. Put both buttons in one `<div className="mt-8 flex gap-3">`, same as Save and Cancel on line 133. Remove `mt-4` and `mt-8` from the buttons.
+1. Edit Profile is `<Button>` now, so `opacity-50` is gone. Delete Account is `<Button variant="danger">`.
+2. Put both in one `<div className="mt-8 flex gap-3">`, same as Save and Cancel. No margins on the buttons themselves.
 3. Hide Edit Profile and Delete Account while `isEditing` is true. Two sets of buttons on one card is confusing.
 
 - [ ] Done
 
-### 14. Toast on save (45 min)
+### 17. Toast on save (45 min)
 
-1. Make `src/components/Toast.tsx`. Props: `message: string`, `onClose: () => void`. Fixed bottom right, green, disappears after 3 seconds with `setTimeout` inside `useEffect`. Clean up the timer in the return of `useEffect`.
+1. Make `src/components/Toast.tsx`. Props: `message: string`, `onClose: () => void`. Fixed bottom right, green, `Button variant="secondary"` to close, disappears after 3 seconds with `setTimeout` inside `useEffect`. Clean up the timer in the return of `useEffect`.
 2. Toast state lives in `App.tsx`: `const [toast, setToast] = useState<string | null>(null)`. Render `{toast && <Toast message={toast} onClose={() => setToast(null)} />}` once, above `<Routes>`.
 3. `handleUpdateUser` becomes a `useMutation`. `onSuccess` → `setToast('Profile updated')` and `queryClient.invalidateQueries({ queryKey: ['me'] })`.
 
@@ -310,17 +373,17 @@ Why: this is the first time `useEffect` is the right tool this week. A timer is 
 
 - [ ] Done
 
-### 15. Confirmation dialog (45 min)
+### 18. Confirmation dialog (45 min)
 
 `window.confirm` on line 171 is the browser's dialog. You cannot style it and you cannot test it.
 
-1. Make `src/components/ConfirmDialog.tsx`. Props: `title`, `message`, `confirmLabel`, `onConfirm`, `onCancel`. Use the `<dialog>` element. Dark overlay, card in the middle, red confirm button, grey cancel.
+1. Make `src/components/ConfirmDialog.tsx`. Props: `title`, `message`, `confirmLabel`, `onConfirm`, `onCancel`. Use the `<dialog>` element. Dark overlay, `<Card>` in the middle, `<Button variant="danger">` to confirm, `<Button variant="secondary">` to cancel.
 2. `Profile.tsx`: `const [showDeleteDialog, setShowDeleteDialog] = useState(false)`. Delete Account opens it. Confirm calls `onDeleteUser()`.
 3. Press Escape. It should close. `<dialog>` does that for you if you use `showModal()`. Try it.
 
 - [ ] Done
 
-### 16. Profile picture (1 hour, hardest task)
+### 19. Profile picture (1 hour, hardest task)
 
 1. Backend: `@Column({ type: 'text', nullable: true }) avatar: string | null` on the entity. Add `avatar` to `UpdateUserDto` as `@IsOptional() @IsString()`. It will be a `data:image/...;base64,...` string. Add `app.use(json({ limit: '5mb' }))` in `main.ts` or the request gets 413.
 2. Frontend: `avatar: string | null` on the `User` type. In the edit form, `<input type="file" accept="image/*">`. On change, read the file with `FileReader.readAsDataURL`, put the result in form state with `setValue('avatar', result)`.
@@ -338,9 +401,9 @@ Base64 in a database column is the wrong final answer. It is the right first ans
 ## Questions for Friday
 
 1. Task 4: why is `PATCH /users/:id` with a guard still not safe?
-2. Task 11: why was there no loading flash the second time you opened Dashboard?
-3. Task 14: `useEffect` was right for the toast timer and wrong for fetching. What is the rule?
-4. Task 16: what goes wrong if a user uploads a 10 MB photo and we store it in the row?
+2. Task 14: why was there no loading flash the second time you opened Dashboard?
+3. Task 17: `useEffect` was right for the toast timer and wrong for fetching. What is the rule?
+4. Task 19: what goes wrong if a user uploads a 10 MB photo and we store it in the row?
 
 Do not know? Say so. Guessing is not fine.
 
