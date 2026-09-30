@@ -329,3 +329,24 @@ Why: `Profile` cannot change `user` alone because `Dashboard` needs it too. Data
 **Friday work done when:** both Profile buttons work, each field shows its own error, name change shows everywhere, Login still uses `useState`. Pushed.
 
 **If time left (45 min):** `src/hooks/useLocalStorage.ts` with signature `useLocalStorage<T>(key: string, initialValue: T)`, returns `[value, setValue]`. Use it for both `isLoggedIn` and `user`. `App.tsx` has no `localStorage` after. The `<T>` is the one generic allowed this week.
+
+---
+
+## Review — 30 September 2026
+
+I pulled `learning/week-2`, ran both apps, registered, logged in, clicked everything. Notes below. Fixes go into week 4, see `learning/week-4`.
+
+**Bugs**
+
+1. Wrong email or password → no error message shown. Form just sits there.
+2. `← Back` button in the header. Not sure why it is there. On Dashboard it links to Dashboard, so it does nothing.
+3. Dashboard numbers (`1,248`, `$24,580`, `342`) and Recent Activity (`john@example.com`) are hardcoded. Everything on the dashboard should come from the database.
+
+**Profile page**
+
+4. "Edit Profile" looks disabled (faded) when the page loads. It is not disabled, it just has `opacity-50`. Remove it.
+5. No gap between the Personal Information block and the "Edit Profile" / "Delete Account" buttons. Buttons are also stacked oddly: one has `mt-8`, one has `mt-4`.
+6. "Update Password" should be disabled when the form loads. Enable it once all three fields are filled.
+7. Show a toast when user information is saved. Right now Save closes the form and nothing confirms it worked.
+8. Add a way to change the profile picture. Avatar is just the first letter.
+9. Delete Account uses `window.confirm`. Replace it with our own confirmation dialog component.
