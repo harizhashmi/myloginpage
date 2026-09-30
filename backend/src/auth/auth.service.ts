@@ -42,7 +42,10 @@ export class AuthService {
   }
 
   async findByEmail(email: string) {
-    return this.usersRepository.findOneBy({ email });
+    return this.usersRepository.findOne({
+      where: { email },
+      select: ['id', 'name', 'email', 'password'],
+    });
   }
 
   async login(email: string, password: string) {
