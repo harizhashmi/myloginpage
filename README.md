@@ -120,7 +120,7 @@ Why: "protected" means the server checks. The frontend hiding a button is not pr
 
 **Checkpoint:** `npm run lint` passes in both packages. `curl http://localhost:3000/users` returns 401. Commit. Push.
 
-- [ ] Done
+- [x] Done
 
 ### 5. Fix the `any` in `auth.service.ts` (20 min)
 
