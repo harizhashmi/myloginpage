@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
-import { Repository } from 'typeorm';
+import { Repository, QueryFailedError } from 'typeorm';
 import { User } from '../users/user.entity';
 import { JwtService } from '@nestjs/jwt';
 @Injectable()
@@ -32,8 +32,11 @@ export class AuthService {
         name: savedUser.name,
         email: savedUser.email,
       };
-    } catch (error: any) {
-      if (error.code === '23505') {
+    } catch (error: unknown) {
+      if (
+        error instanceof QueryFailedError &&
+        error.driverError.code === '23505'
+      ) {
         throw new ConflictException('Email already exists');
       }
 
