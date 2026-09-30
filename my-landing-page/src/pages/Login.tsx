@@ -6,7 +6,7 @@ type LoginProps = {
   onLogin: (credentials: {
     email: string;
     password: string;
-  }) => Promise<boolean>;
+  }) => Promise<true | string>;
 };
 
 function Login({ onLogin }: LoginProps) {
@@ -19,8 +19,8 @@ function Login({ onLogin }: LoginProps) {
 
     const success = await onLogin({ email, password });
 
-    if (!success) {
-      setError("Incorrect email or password");
+    if (success !== true) {
+      setError(success);
     }
   }
 

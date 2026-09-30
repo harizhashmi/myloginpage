@@ -55,7 +55,10 @@ function App() {
 
   const navigate = useNavigate();
 
-  async function handleLogin({ email, password }: LoginCredentials) {
+  async function handleLogin({
+    email,
+    password,
+  }: LoginCredentials): Promise<true | string> {
     const response = await fetch("http://localhost:3000/auth/login", {
       method: "POST",
       headers: {
