@@ -11,6 +11,14 @@ export class UsersService {
     private readonly usersRepository: Repository<User>,
   ) {}
 
+  async getStats() {
+    const totalUsers = await this.usersRepository.count();
+
+    return {
+      totalUsers,
+    };
+  }
+
   getUsers() {
     return this.usersRepository.find();
   }
