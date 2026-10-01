@@ -2,6 +2,7 @@ import Input from "../components/Input";
 import { Link } from "react-router";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
+import Button from "../components/Button";
 
 type RegisterFormValues = {
   name: string;
@@ -87,7 +88,9 @@ function Register({ onRegister }: RegisterProps) {
           />
         </div>
 
-        <button type="submit">Create Account</button>
+        <Button type="submit" className="w-full mt-6">
+          Create Account
+        </Button>
 
         {serverError && (
           <p className="mt-4 text-center text-sm text-red-400">{serverError}</p>
