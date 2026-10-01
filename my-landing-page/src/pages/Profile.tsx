@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { useState } from "react";
 import Button from "../components/Button";
 import Card from "../components/Card";
+import { Link } from "react-router";
 
 type InfoFieldProps = {
   label: string;
@@ -82,6 +83,12 @@ function Profile({ user, onLogout, onUpdateUser, onDeleteUser }: ProfileProps) {
 
         {/* Main */}
         <main className="max-w-4xl mx-auto p-8">
+          <Link
+            to="/dashboard"
+            className="text-blue-400 hover:text-blue-300 font-semibold"
+          >
+            ← Back to Dashboard
+          </Link>
           {/* Profile Card */}
           <Card className="mt-6 ">
             <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
