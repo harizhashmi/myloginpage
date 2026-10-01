@@ -23,9 +23,21 @@ export class UsersService {
       .where('user.createdAt >= :startOfMonth', { startOfMonth })
       .getCount();
 
+    const recentUsers = await this.usersRepository.find({
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        createdAt: true,
+      },
+      order: { createdAt: 'DESC' },
+      take: 5,
+    });
+
     return {
       totalUsers,
       newThisMonth,
+      recentUsers,
     };
   }
 
