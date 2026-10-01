@@ -17,6 +17,11 @@ import type { AuthenticatedRequest } from '../auth/authenticated-request';
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
+  @Get('stats')
+  getStats() {
+    return this.usersService.getStats();
+  }
+
   @Get('me')
   async getMe(@Req() request: AuthenticatedRequest) {
     return this.usersService.getUser(request.user.userId);
