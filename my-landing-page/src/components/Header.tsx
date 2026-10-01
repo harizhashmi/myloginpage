@@ -1,5 +1,6 @@
 import type { User } from "../types";
 import { Link } from "react-router";
+import Button from "./Button";
 
 type HeaderProps = {
   title: string;
@@ -11,13 +12,6 @@ function Header({ title, onLogout, user }: HeaderProps) {
   return (
     <header className="h-20 border-b border-slate-800 flex items-center justify-between px-8">
       <div className="flex items-center gap-4">
-        <Link
-          to="/dashboard"
-          className="px-4 py-2 bg-slate-800 hover:bg-slate-700 rounded-lg"
-        >
-          ← Back
-        </Link>
-
         <h1 className="text-2xl font-bold">{title}</h1>
       </div>
 
@@ -39,7 +33,7 @@ function Header({ title, onLogout, user }: HeaderProps) {
           </Link>
         )}
 
-        <button onClick={onLogout}>Logout</button>
+        <Button onClick={onLogout}>Logout</Button>
       </div>
     </header>
   );
