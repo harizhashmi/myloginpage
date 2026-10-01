@@ -14,8 +14,18 @@ export class UsersService {
   async getStats() {
     const totalUsers = await this.usersRepository.count();
 
+    const startOfMonth = new Date();
+    startOfMonth.setDate(1);
+    startOfMonth.setHours(0, 0, 0, 0);
+
+    const newThisMonth = await this.usersRepository
+      .createQueryBuilder('user')
+      .where('user.createdAt >= :startOfMonth', { startOfMonth })
+      .getCount();
+
     return {
       totalUsers,
+      newThisMonth,
     };
   }
 
