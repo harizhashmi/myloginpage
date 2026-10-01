@@ -8,6 +8,7 @@ import NotFound from "./pages/NotFound";
 import Register from "./pages/Register";
 import { useEffect } from "react";
 import { useState } from "react";
+import { apiFetch } from "./api";
 
 type LoginCredentials = {
   email: string;
@@ -25,25 +26,8 @@ function App() {
       return;
     }
 
-    fetch("http://localhost:3000/users/me", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then((response) => {
-        if (!response.ok) {
-          localStorage.removeItem("access_token");
-          setIsLoggedIn(false);
-          return null;
-        }
-
-        return response.json();
-      })
+    apiFetch<User>("/users/me")
       .then((data) => {
-        if (!data) {
-          return;
-        }
-
         setUser({
           id: data.id,
           name: data.name,
@@ -51,6 +35,10 @@ function App() {
         });
 
         setIsLoggedIn(true);
+      })
+      .catch(() => {
+        localStorage.removeItem("access_token");
+        setIsLoggedIn(false);
       });
   }, []);
 
@@ -60,82 +48,56 @@ function App() {
     email,
     password,
   }: LoginCredentials): Promise<true | string> {
-    const response = await fetch("http://localhost:3000/auth/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email,
-        password,
-      }),
-    });
+    try {
+      const data = await apiFetch<{ access_token: string; user: User }>(
+        "/auth/login",
+        {
+          method: "POST",
+          body: JSON.stringify({ email, password }),
+        },
+      );
 
-    if (!response.ok) {
-      const data = await response.json();
+      localStorage.setItem("access_token", data.access_token);
 
-      return data.message;
+      setUser({
+        id: data.user.id,
+        name: data.user.name,
+        email: data.user.email,
+      });
+
+      setIsLoggedIn(true);
+      navigate("/dashboard");
+
+      return true;
+    } catch (e) {
+      return e instanceof Error ? e.message : "Something went wrong";
     }
-
-    const data = await response.json();
-
-    localStorage.setItem("access_token", data.access_token);
-    console.log(data);
-
-    setUser({
-      id: data.user.id,
-      name: data.user.name,
-      email: data.user.email,
-    });
-
-    setIsLoggedIn(true);
-    navigate("/dashboard");
-
-    return true;
   }
 
   async function handleUpdateUser(values: User) {
-    const token = localStorage.getItem("access_token");
+    try {
+      await apiFetch<User>("/users/me", {
+        method: "PATCH",
+        body: JSON.stringify({
+          name: values.name,
+          email: values.email,
+        }),
+      });
 
-    if (!token) {
+      setUser(values);
+    } catch {
       return;
     }
-
-    const response = await fetch("http://localhost:3000/users/me", {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({
-        name: values.name,
-        email: values.email,
-      }),
-    });
-
-    if (!response.ok) {
-      return;
-    }
-
-    setUser(values);
   }
 
   async function handleDeleteUser() {
-    console.log("User being deleted:", user);
-    const token = localStorage.getItem("access_token");
-
-    if (!token || !user) {
+    if (!user) {
       return;
     }
 
-    const response = await fetch("http://localhost:3000/users/me", {
-      method: "DELETE",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-
-    if (!response.ok) {
+    try {
+      await apiFetch("/users/me", { method: "DELETE" });
+    } catch {
       return;
     }
 
@@ -151,6 +113,7 @@ function App() {
     setIsLoggedIn(false);
     navigate("/");
   }
+
   return (
     <Routes>
       <Route path="/" element={<Login onLogin={handleLogin} />} />
@@ -171,26 +134,18 @@ function App() {
         element={
           <Register
             onRegister={async (newUser) => {
-              const response = await fetch(
-                "http://localhost:3000/auth/register",
-                {
+              try {
+                await apiFetch("/auth/register", {
                   method: "POST",
-                  headers: {
-                    "Content-Type": "application/json",
-                  },
                   body: JSON.stringify(newUser),
-                },
-              );
+                });
 
-              if (!response.ok) {
-                const data = await response.json();
+                navigate("/login");
 
-                return data.message;
+                return true;
+              } catch (e) {
+                return e instanceof Error ? e.message : "Something went wrong";
               }
-
-              navigate("/login");
-
-              return true;
             }}
           />
         }
