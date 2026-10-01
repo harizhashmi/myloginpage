@@ -229,7 +229,9 @@ function Profile({ user, onLogout, onUpdateUser, onDeleteUser }: ProfileProps) {
               />
             </div>
 
-            <button type="submit">Update Password</button>
+            <Button type="submit" className="mt-6">
+              Update Password
+            </Button>
           </form>
         </main>
       </div>
