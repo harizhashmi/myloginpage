@@ -1,7 +1,8 @@
 import { useState } from "react";
 import Input from "../components/Input";
-import { Link } from "react-router";
+import Button from "../components/Button";
 import Card from "../components/Card";
+import { Link } from "react-router";
 
 type LoginProps = {
   onLogin: (credentials: {
@@ -45,32 +46,34 @@ function Login({ onLogin }: LoginProps) {
             <div className="mb-5">
               <Input
                 id="email"
-                label="email"
+                label="Email"
                 type="email"
                 value={email}
                 onChange={(event) => setEmail(event.target.value)}
                 placeholder="Enter your email"
                 required
-                className="w-full px-4 py-3 bg-slate-950 border border-slate-700 rounded-xl text-white outline-none focus:border-blue-500"
               />
             </div>
 
             <div className="mb-6">
               <Input
                 id="password"
-                label="password"
+                label="Password"
                 type="password"
                 value={password}
                 onChange={(event) => setPassword(event.target.value)}
                 placeholder="Enter your password"
                 required
-                className="w-full px-4 py-3 bg-slate-950 border border-slate-700 rounded-xl text-white outline-none focus:border-blue-500"
               />
             </div>
 
-            <button type="submit">Sign in</button>
+            <Button type="submit" className="w-full">
+              Sign in
+            </Button>
 
-            {error && <p className="text-red-500 text-sm mt-4">{error}</p>}
+            {error && (
+              <p className="text-red-400 text-sm mt-4 text-center">{error}</p>
+            )}
 
             <p className="text-center text-sm text-slate-400 mt-6">
               Don't have an account?{" "}

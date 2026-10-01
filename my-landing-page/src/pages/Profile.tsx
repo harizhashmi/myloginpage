@@ -102,7 +102,7 @@ function Profile({ user, onLogout, onUpdateUser, onDeleteUser }: ProfileProps) {
           </Card>
 
           {/* Personal Information */}
-          <Card className="mt-6 ">
+          <Card className="mt-6">
             <h2 className="text-xl font-semibold mb-6">Personal Information</h2>
 
             {isEditing ? (
@@ -132,10 +132,11 @@ function Profile({ user, onLogout, onUpdateUser, onDeleteUser }: ProfileProps) {
                   />
                 </div>
 
-                <div className="mt-8 flex gap-3">
-                  <button type="submit">Save</button>
+                <div className="mt-8 flex gap-4">
+                  <Button type="submit">Save</Button>
 
-                  <button
+                  <Button
+                    variant="secondary"
                     type="button"
                     onClick={() => {
                       resetProfile();
@@ -143,7 +144,7 @@ function Profile({ user, onLogout, onUpdateUser, onDeleteUser }: ProfileProps) {
                     }}
                   >
                     Cancel
-                  </button>
+                  </Button>
                 </div>
               </form>
             ) : (
@@ -153,25 +154,27 @@ function Profile({ user, onLogout, onUpdateUser, onDeleteUser }: ProfileProps) {
                 ))}
               </div>
             )}
-            <button type="button" onClick={() => setIsEditing(true)}>
-              Edit Profile
-            </button>
+            <div className="mt-8 flex gap-4">
+              <Button variant="primary" onClick={() => setIsEditing(true)}>
+                Edit Profile
+              </Button>
 
-            <Button
-              variant="danger"
-              type="button"
-              onClick={() => {
-                const confirmed = window.confirm(
-                  "Are you sure you want to delete your account?",
-                );
+              <Button
+                variant="danger"
+                type="button"
+                onClick={() => {
+                  const confirmed = window.confirm(
+                    "Are you sure you want to delete your account?",
+                  );
 
-                if (confirmed) {
-                  onDeleteUser();
-                }
-              }}
-            >
-              Delete Account
-            </Button>
+                  if (confirmed) {
+                    onDeleteUser();
+                  }
+                }}
+              >
+                Delete Account
+              </Button>
+            </div>
           </Card>
 
           {/* Change Password */}
