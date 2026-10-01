@@ -4,6 +4,7 @@ import Input from "../components/Input";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import Button from "../components/Button";
+import Card from "../components/Card";
 
 type InfoFieldProps = {
   label: string;
@@ -82,7 +83,7 @@ function Profile({ user, onLogout, onUpdateUser, onDeleteUser }: ProfileProps) {
         {/* Main */}
         <main className="max-w-4xl mx-auto p-8">
           {/* Profile Card */}
-          <div className="bg-slate-900 border border-slate-800 rounded-2xl p-8">
+          <Card className="mt-6 ">
             <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
               {/* Avatar */}
               <div className="w-24 h-24 rounded-full bg-blue-600 flex items-center justify-center text-4xl font-bold">
@@ -98,10 +99,10 @@ function Profile({ user, onLogout, onUpdateUser, onDeleteUser }: ProfileProps) {
                 <p className="text-slate-500 mt-1">{user.email} </p>
               </div>
             </div>
-          </div>
+          </Card>
 
           {/* Personal Information */}
-          <div className="mt-6 bg-slate-900 border border-slate-800 rounded-2xl p-8">
+          <Card className="mt-6 ">
             <h2 className="text-xl font-semibold mb-6">Personal Information</h2>
 
             {isEditing ? (
@@ -171,12 +172,12 @@ function Profile({ user, onLogout, onUpdateUser, onDeleteUser }: ProfileProps) {
             >
               Delete Account
             </Button>
-          </div>
+          </Card>
 
           {/* Change Password */}
           <form
             onSubmit={handleSubmit(onSubmit)}
-            className="mt-6 bg-slate-900 border border-slate-800 rounded-2xl p-8"
+            className="mt-6 bg-slate-900 border border-slate-800 rounded-2xl p-8 "
           >
             <h2 className="text-xl font-semibold mb-6">Change Password</h2>
 

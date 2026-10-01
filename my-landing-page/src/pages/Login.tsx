@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Input from "../components/Input";
 import { Link } from "react-router";
+import Card from "../components/Card";
 
 type LoginProps = {
   onLogin: (credentials: {
@@ -37,7 +38,7 @@ function Login({ onLogin }: LoginProps) {
           <p className="text-slate-400 mt-2">Welcome back</p>
         </div>
 
-        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-8">
+        <Card className="mt-6">
           <h2 className="text-2xl font-semibold text-white mb-6">Sign in</h2>
 
           <form onSubmit={handleSubmit}>
@@ -81,7 +82,7 @@ function Login({ onLogin }: LoginProps) {
               </Link>
             </p>
           </form>
-        </div>
+        </Card>
       </div>
     </div>
   );
